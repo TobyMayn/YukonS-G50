@@ -1,4 +1,4 @@
-# Install script for directory: C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50
+# Install script for directory: C:/Users/mads2/OneDrive/Dokumenter/GitHub/YukonS-G50
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/mads2/OneDrive/Dokumenter/GitHub/YukonS-G50/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

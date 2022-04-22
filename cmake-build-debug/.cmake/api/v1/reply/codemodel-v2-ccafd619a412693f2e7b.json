@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50/cmake-build-debug",
-		"source" : "C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50"
+		"build" : "C:/Users/mads2/OneDrive/Dokumenter/GitHub/YukonS-G50/cmake-build-debug",
+		"source" : "C:/Users/mads2/OneDrive/Dokumenter/GitHub/YukonS-G50"
 	},
 	"version" : 
 	{
