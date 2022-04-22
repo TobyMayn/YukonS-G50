@@ -1,0 +1,3 @@
+C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50/cmake-build-debug/CMakeFiles/YukonS_G50.dir
+C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/DTU/2-semester/Maskinær programmering/Yukon/YukonS-G50/cmake-build-debug/CMakeFiles/rebuild_cache.dir
