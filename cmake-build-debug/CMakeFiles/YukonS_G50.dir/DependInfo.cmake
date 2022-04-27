@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/mads2/OneDrive/Dokumenter/GitHub/YukonS-G50/main.cpp" "CMakeFiles/YukonS_G50.dir/main.cpp.obj" "gcc" "CMakeFiles/YukonS_G50.dir/main.cpp.obj.d"
+  "C:/DTU/2-semester/MaskinarProgrammering/Yukon/YukonS-G50/main.cpp" "CMakeFiles/YukonS_G50.dir/main.cpp.obj" "gcc" "CMakeFiles/YukonS_G50.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.
