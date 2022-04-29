@@ -6,6 +6,12 @@ typedef struct card Card;
 const char suits[] = {'C', 'D', 'H', 'S'};
 char ranks[] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
 
+// Foundations
+Card *foundations[4];
+
+//Columns
+Card *columns[7];
+
 struct card {
     Card *prev;
     Card *next;
@@ -37,7 +43,7 @@ Card *default_deck(){
 }
 
 //Still needs work - currently only takes input file and prints content to terminal
-Card *load_deck(){
+Card *load_deck(char* filename){
     FILE* ptr;
     char ch;
 
@@ -64,21 +70,52 @@ Card *load_deck(){
         card->prev = prev;
         prev = card;
 
-        // Checking if character is not EOF.
-        // If it is EOF stop reading.
+    // Checking if character is not EOF.
+    // If it is EOF stop reading.
     } while (ch != EOF);
 
     // Closing the file
     fclose(ptr);
     return deck;
+}
+void *save_cards(Card deck, char* filename){
 
 }
 
+void show(){
+
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+    for (int i = 0; i < 52; ++i) {
+
+    }
+}
+
+const char* get_input() {
+    char input[127];
+    printf("Enter command: ");
+    scanf("%s", &input);
+    return input;
+}
+
+void setup_columns_foundations(){
+    for (int i = 0; i < 4; ++i) {
+        foundations[i] = new_card('d', 'd'); //dummy card
+    }
+    for (int i = 0; i < 7; ++i) {
+        columns[i] = new_card('d', 'd'); //dummy card
+    }
+}
+
+
 int main() {
     int a = 4;
+    setup_columns_foundations();
+    Card *first_card = columns[0];
+    Card *card  = new_card('A', 'C');
+    first_card->next = card;
     //Test to show how it could be made in conole
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
-    printf("\tKC\t[]\t[]\t[]\t[]\t[]\t[]\t\tF1\n");
+    printf("\t%c%c\t[]\t[]\t[]\t[]\t[]\t[]\t\tF1\n", first_card->next->rank, first_card->next->suit);
     printf("\t  \t7H\t[]\t[]\t[]\t[]\t[]\t\t\n");
     printf("\t  \t  \t5H\t[]\t[]\t[]\t[]\t\tF2\n");
     printf("\t  \t  \t  \t6C\t[]\t[]\t[]\t\t\n");
@@ -88,11 +125,23 @@ int main() {
     printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
 
     // Test to print all cards, if no input file is provided
-    Card * deck = load_deck();
+    Card * deck = load_deck(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)");
     do {
         deck = deck->next;
         printf("%c%c\n",deck->rank, deck->suit);
     }  while (deck->next != NULL);
+
+
+    do {
+        printf("%c%c\n",first_card->rank, first_card->suit);
+        first_card = first_card->next;
+        printf("%c%c\n",first_card->rank, first_card->suit);
+    }  while (first_card->next != NULL);
+
+    //clear screen
+    //system("cls");
+
+
 
     return 0;
 }
