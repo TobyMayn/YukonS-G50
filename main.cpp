@@ -78,8 +78,18 @@ Card *load_deck(char* filename){
     fclose(ptr);
     return deck;
 }
-void *save_cards(Card deck, char* filename){
+void *save_cards(Card *deck, char* filename){
+    FILE* ptr;
 
+    ptr = fopen(filename, "w");
+    do {
+        deck = deck->next;
+        fprintf(ptr,"%c%c\n", deck->rank, deck->suit);
+    }while(deck->next != NULL);
+
+
+    // Closing the file
+    fclose(ptr);
 }
 
 void show(){
@@ -126,20 +136,22 @@ int main() {
 
     // Test to print all cards, if no input file is provided
     Card * deck = load_deck(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)");
-    do {
-        deck = deck->next;
-        printf("%c%c\n",deck->rank, deck->suit);
-    }  while (deck->next != NULL);
-
-
-    do {
-        printf("%c%c\n",first_card->rank, first_card->suit);
-        first_card = first_card->next;
-        printf("%c%c\n",first_card->rank, first_card->suit);
-    }  while (first_card->next != NULL);
+//    do {
+//        deck = deck->next;
+//        printf("%c%c\n",deck->rank, deck->suit);
+//    }  while (deck->next != NULL);
+//
+//
+//    do {
+//        printf("%c%c\n",first_card->rank, first_card->suit);
+//        first_card = first_card->next;
+//        printf("%c%c\n",first_card->rank, first_card->suit);
+//    }  while (first_card->next != NULL);
 
     //clear screen
     //system("cls");
+
+    save_cards(deck, "C:\\DTU\\2-semester\\MaskinarProgrammering\\Yukon\\YukonS-G50\\Test1_input.txt");
 
 
 
