@@ -74,6 +74,51 @@ Card *load_deck(){
 
 }
 
+Char move;
+
+switch(move)
+{
+    //load file. Needs file name
+    case 'ld':
+
+        break;
+    //Show all the cards
+    case 'sw':
+
+        break;
+    //Split the deck and shuffle in an interleved manner
+    case 'sl':
+
+        break;
+    // Shuffle the deck in a random manner
+    case 'sr':
+
+        break;
+    //Saves the card game.
+    case 'sd':
+
+        break;
+    //Force quit the game.
+    case 'qq':
+
+        break;
+    //Starts the game using the current deck
+    case 'p':
+
+        break;
+    //Quit current game, and return to the setup phase
+    case 'q':
+
+        break;
+    //Placeholder for move commands.
+    case 'm':
+
+        break;
+    // In case of unexpected inputs
+    default:
+        printf("Error, this does not match an accepted input");
+}
+
 int main() {
     int a = 4;
     //Test to show how it could be made in conole
