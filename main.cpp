@@ -44,23 +44,33 @@ Card *load_deck(){
     ptr = fopen(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)", "r");
 
     if (NULL == ptr) {
-
+        printf("File doesn't exist");
     }
-    printf("content of this file are \n");
 
-    // Printing what is written in file
-    // character by character using loop.
+    // Add dummy card to bottom
+    Card *deck = new_card('B', 'B');
+    Card *prev = deck;
+
+    char input[3]; // char array to hold line characters for input
+
+    // Do-while that reads an entire line, creates a new card and adds it to the deck
     do {
-        ch = fgetc(ptr);
-        printf("%c", ch);
+        for (int i = 0; i < 3; ++i) {
+            ch = fgetc(ptr);
+            input[i] = ch;
+        }
+        Card *card = new_card(input[0], input[1]);
+        prev->next = card;
+        card->prev = prev;
+        prev = card;
 
         // Checking if character is not EOF.
-        // If it is EOF stop eading.
+        // If it is EOF stop reading.
     } while (ch != EOF);
 
     // Closing the file
     fclose(ptr);
-
+    return deck;
 
 }
 
@@ -78,11 +88,11 @@ int main() {
     printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
 
     // Test to print all cards, if no input file is provided
-    //Card * deck = default_deck();
-    //do {
-    //    deck = deck->next;
-    //    printf("%c%c\n",deck->rank, deck->suit);
-    //}  while (deck->next != NULL);
+    Card * deck = load_deck();
+    do {
+        deck = deck->next;
+        printf("%c%c\n",deck->rank, deck->suit);
+    }  while (deck->next != NULL);
 
     return 0;
 }
