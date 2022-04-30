@@ -47,7 +47,7 @@ Card *load_deck(char* filename){
     FILE* ptr;
     char ch;
 
-    ptr = fopen(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)", "r");
+    ptr = fopen(filename, "r");
 
     if (NULL == ptr) {
         printf("File doesn't exist");
