@@ -150,6 +150,7 @@ void print_gamestate(){
     Card* foundation_temp;
     //printing all cards in the column or and empty space if there is no card.
     for (int i = 0; i < max_length; ++i) {
+        printf("\n");
         for (int j = 0; j < sizeof(placeholder) / sizeof(placeholder[0]); ++j) {
             if (placeholder[j]->next != NULL){
                 placeholder[j] = placeholder[j]->next;
