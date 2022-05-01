@@ -1,4 +1,10 @@
 AC
+2C
+3C
+4C
+5C
+6C
+7C
 8C
 9C
 TC
@@ -32,12 +38,6 @@ JH
 QH
 KH
 AS
-2C
-3C
-4C
-5C
-6C
-7C
 2S
 3S
 4S

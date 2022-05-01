@@ -12,6 +12,9 @@ Card *foundations[4];
 //Columns
 Card *columns[7];
 
+//Head for initial linked list
+Card *head = NULL;
+
 struct card {
     Card *prev;
     Card *next;
@@ -56,6 +59,7 @@ Card *load_deck(char* filename){
     // Add dummy card to bottom
     Card *deck = new_card('B', 'B');
     Card *prev = deck;
+    head = deck;
 
     char input[3]; // char array to hold line characters for input
 
@@ -93,11 +97,29 @@ void *save_cards(Card *deck, char* filename){
 }
 
 void show(){
+    Card *temp = head;
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    int i = 0;
+    int j = 1;
+    int f;
+    char s[2];
+    while(temp->next != NULL){
+        if(i % 7 == 0) {
+            if(j % 2 == 0 && j != 1) {
+                f = j / 2;
+                s[0] = 'F';
+                s[1] = f + '0';
+                printf("\t[]\t%s",s);
+            }
+            printf("\n\t");
+            j++;
+        }
+        temp = temp->next;
+        printf("%c%c\t",temp->rank, temp->suit);
 
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
-    for (int i = 0; i < 52; ++i) {
-
+        i++;
     }
+    printf("\n\n");
 }
 
 const char* get_input() {
@@ -133,6 +155,10 @@ int main() {
     printf("\t  \t  \t  \t  \t  \tQC\t[]\t\t\n");
     printf("\t  \t  \t  \t  \t  \t  \tKH\t\tF4\n");
     printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
+
+    //Test for show method
+    head = load_deck("C:\\Users\\emil1\\OneDrive\\Documents\\GitHub\\YukonS-G50\\Test_input.txt");
+    show();
 
     // Test to print all cards, if no input file is provided
     Card * deck = load_deck(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)");
