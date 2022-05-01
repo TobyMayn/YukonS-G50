@@ -96,6 +96,64 @@ void *save_cards(Card *deck, char* filename){
     fclose(ptr);
 }
 
+// Helper method for interleave_shuffle
+Card *split_deck(Card *deck, int amount){
+    Card *temp_deck = deck;
+    // Loop to find spot to split
+    for (int i = 0; i <= amount; ++i) {
+        temp_deck = temp_deck->next;
+    }
+    temp_deck->prev = NULL;
+    Card *part = temp_deck->next; // Variable for holding split part of deck
+    temp_deck->next = NULL;
+    return part;
+}
+
+
+Card *interleave_shuffle(Card *deck, int amount){
+    Card *new_deck = deck; // Variable for holding interleaved deck
+    Card *part = split_deck(deck, amount);
+
+    // Add dummy card to new card deck
+    new_deck->next = NULL; // Set next pointer to NULL
+    deck = deck->next; // Deck now has first actual card
+    //deck->prev = NULL;
+
+    while(deck->next != NULL){
+        if(part->next == NULL){
+            new_deck->next = deck;
+            deck->prev = new_deck;
+            return new_deck;
+        }
+
+        // Add card from first pile to new_deck
+        new_deck->next = deck;
+        new_deck->next->prev = new_deck;
+        new_deck = new_deck->next;
+
+
+        if(part->next != NULL){
+            //Add card from second pile to new_deck
+            new_deck->next = part;
+            new_deck->next->prev = new_deck;
+            new_deck = new_deck->next;
+        }
+        // Update pointers
+        deck->prev = NULL;
+        part->prev = NULL;
+        deck = deck->next;
+        part = part->next;
+    }
+    new_deck->next = part;
+    part->prev = new_deck;
+
+    return new_deck;
+}
+
+Card *random_shuffle(Card *deck){
+    return deck;
+}
+
 void show(){
     Card *temp = head;
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
@@ -198,31 +256,33 @@ void setup_columns_foundations(){
 
 int main() {
     int a = 4;
-    setup_columns_foundations();
-    Card *first_card = columns[0];
-    Card *card  = new_card('A', 'C');
-    first_card->next = card;
-    //Test to show how it could be made in conole
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
-    printf("\t%c%c\t[]\t[]\t[]\t[]\t[]\t[]\t\tF1\n", first_card->next->rank, first_card->next->suit);
-    printf("\t  \t7H\t[]\t[]\t[]\t[]\t[]\t\t\n");
-    printf("\t  \t  \t5H\t[]\t[]\t[]\t[]\t\tF2\n");
-    printf("\t  \t  \t  \t6C\t[]\t[]\t[]\t\t\n");
-    printf("\t  \t  \t  \t  \t6S\t[]\t[]\t\tF3\n");
-    printf("\t  \t  \t  \t  \t  \tQC\t[]\t\t\n");
-    printf("\t  \t  \t  \t  \t  \t  \tKH\t\tF4\n");
-    printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
+//    setup_columns_foundations();
+//    Card *first_card = columns[0];
+//    Card *card  = new_card('A', 'C');
+//    first_card->next = card;
+//    //Test to show how it could be made in conole
+//    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+//    printf("\t%c%c\t[]\t[]\t[]\t[]\t[]\t[]\t\tF1\n", first_card->next->rank, first_card->next->suit);
+//    printf("\t  \t7H\t[]\t[]\t[]\t[]\t[]\t\t\n");
+//    printf("\t  \t  \t5H\t[]\t[]\t[]\t[]\t\tF2\n");
+//    printf("\t  \t  \t  \t6C\t[]\t[]\t[]\t\t\n");
+//    printf("\t  \t  \t  \t  \t6S\t[]\t[]\t\tF3\n");
+//    printf("\t  \t  \t  \t  \t  \tQC\t[]\t\t\n");
+//    printf("\t  \t  \t  \t  \t  \t  \tKH\t\tF4\n");
+//    printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
 
     //Test for show method
     head = load_deck("C:\\Users\\emil1\\OneDrive\\Documents\\GitHub\\YukonS-G50\\Test_input.txt");
     show();
 
     // Test to print all cards, if no input file is provided
-    Card * deck = load_deck(R"(C:\DTU\2-semester\MaskinarProgrammering\Yukon\YukonS-G50\Test_input.txt)");
-//    do {
-//        deck = deck->next;
-//        printf("%c%c\n",deck->rank, deck->suit);
-//    }  while (deck->next != NULL);
+    Card *deck = default_deck();
+
+    Card *play_deck = interleave_shuffle(deck, 20);
+    do {
+        play_deck = play_deck->next;
+        printf("%c%c\n",play_deck->rank, play_deck->suit);
+    }  while (play_deck->next != NULL);
 //
 //
 //    do {
