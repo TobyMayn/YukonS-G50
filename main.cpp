@@ -122,6 +122,62 @@ void show(){
     printf("\n\n");
 }
 
+void print_gamestate(){
+    Card *placeholder[7];
+
+    //copying head pointers to foundations linked lists over to another array.
+    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {
+        placeholder[i] = columns[i];
+    }
+
+    int max_length = 0;
+    //temp pointer to iterate through lists
+    Card *temp;
+    //finding the longest linked list.
+    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {
+        int j = 0;
+        temp = placeholder[i];
+        while(temp->next != NULL){
+            temp = temp->next;
+            j++;
+        }
+        if(j > max_length)
+            max_length = j;
+    }
+
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    int f = 1;
+    Card* foundation_temp;
+    //printing all cards in the column or and empty space if there is no card.
+    for (int i = 0; i < max_length; ++i) {
+        for (int j = 0; j < sizeof(placeholder) / sizeof(placeholder[0]); ++j) {
+            if (placeholder[j]->next != NULL){
+                placeholder[j] = placeholder[j]->next;
+                printf("%c%c\t",placeholder[j]->rank, placeholder[j]->suit);
+            }
+            else
+                printf("  \t");
+        }
+        //printing foundation cards for evert second row.
+        f++;
+        if (f % 2 == 0 && (f/2) < sizeof(foundations) / sizeof(foundations[0])){
+            foundation_temp = foundations[(f / 2) - 1];
+            if(foundation_temp->next == NULL){
+                printf("[]\tF%c",(f / 2) + '0');
+            }
+            else {
+                while (foundation_temp->next != NULL) {
+                    foundation_temp = foundation_temp->next;
+                }
+                printf("%c%c\t",foundation_temp->rank,foundation_temp->suit);
+            }
+        }
+
+    }
+
+
+}
+
 const char* get_input() {
     char input[127];
     printf("Enter command: ");
