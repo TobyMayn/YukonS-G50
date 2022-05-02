@@ -221,7 +221,7 @@ void print_gamestate(){
         f++;
         if (f % 2 == 0 && (f/2) < sizeof(foundations) / sizeof(foundations[0])){
             foundation_temp = foundations[(f / 2) - 1];
-            if(foundation_temp->next == NULL){
+            if(foundation_temp->prev == NULL){
                 printf("[]\tF%c",(f / 2) + '0');
             }
             else {
