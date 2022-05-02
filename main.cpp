@@ -103,7 +103,7 @@ Card *split_deck(Card *deck, int amount){
     for (int i = 0; i <= amount; ++i) {
         temp_deck = temp_deck->next;
     }
-    //Emil//Bliver prev og next ikke slettet for den samme node her? 
+    //Emil//Bliver prev og next ikke slettet for den samme node her? (113-115) Ville man ikke skulle gøre sådan her?
     // [120][100] - [NULL][70] - [100][130]
     /*
     Card *holder = temp_deck->prev;
