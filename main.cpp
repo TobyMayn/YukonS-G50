@@ -103,12 +103,14 @@ Card *split_deck(Card *deck, int amount){
     for (int i = 0; i <= amount; ++i) {
         temp_deck = temp_deck->next;
     }
-    //Emil//Bliver prev og next ikke slettet for den samme node her? (113-115) Ville man ikke skulle gøre sådan her?
-    // [120][100] - [NULL][70] - [100][130]
+    //Emil//Bliver prev og next ikke slettet for den samme node her? (115-117) Ville man ikke skulle gøre sådan her?
+    // [120][100] - [90][70] - [100][130]
     /*
     Card *holder = temp_deck->prev;
     holder->next = NULL;
+    // [120][NULL] - [90][70] - [100][130]
     temp_deck->prev = NULL;
+    // [120][NULL] - [NULL][70] - [100][130]
     */
     temp_deck->prev = NULL;
     Card *part = temp_deck->next; // Variable for holding split part of deck
