@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 
 typedef struct card Card;
 
@@ -21,6 +22,10 @@ struct card {
     char rank;
     char suit;
 };
+
+void pile_to_pile(const char *command);
+
+void move_specific(const char *command);
 
 Card *new_card(char rank, char suit){
     Card *card = (Card *)malloc(sizeof(Card));
@@ -163,6 +168,48 @@ Card *random_shuffle(Card *deck){
     return deck;
 }
 
+void move(const char *command, int strlen){
+    Card *temp;
+    for (int i = 0; i < sizeof(columns) / sizeof(columns[0]) ; ++i) {
+        if(columns[i]->rank == command[0] && columns[i]->suit == command[1]){
+            temp = columns[i];
+            break;
+        }
+    }
+
+    int type;
+    if (strlen == 6)
+        type = 0;
+    else if(strlen == 9)
+        type = 1;
+    else
+        type = 2;
+
+    char command_type[3][9] = {"LastCard","Specific","Unknown"};
+
+    switch (type) {
+        case 0 :
+            pile_to_pile(command);
+            break;
+        case 1:
+            move_specific(command);
+            break;
+        default:
+            printf("\nUnknown command..!");
+            return;
+    }
+
+}
+
+void move_specific(const char *command) {
+
+}
+
+void pile_to_pile(const char *command) {
+
+}
+
+
 void show(){
     Card *temp = head;
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
@@ -240,7 +287,6 @@ void print_gamestate(){
                 printf("%c%c\t",foundation_temp->rank,foundation_temp->suit);
             }
         }
-
     }
 
 
@@ -258,13 +304,14 @@ void setup_columns_foundations(){
         foundations[i] = new_card('d', 'd'); //dummy card
     }
     for (int i = 0; i < 7; ++i) {
-        columns[i] = new_card('d', 'd'); //dummy card
+        columns[i] = new_card('C', i + 1 + '0'); //dummy card
     }
 }
 
 
 int main() {
     int a = 4;
+
 //    setup_columns_foundations();
 //    Card *first_card = columns[0];
 //    Card *card  = new_card('A', 'C');
