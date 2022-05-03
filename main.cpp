@@ -25,7 +25,7 @@ struct card {
 
 void pile_to_pile(const char *command, Card *pCard);
 
-void move_specific(const char *command);
+void move_specific(const char *command, Card *pCard);
 
 Card *new_card(char rank, char suit){
     Card *card = (Card *)malloc(sizeof(Card));
@@ -190,7 +190,7 @@ void move(const char *command, int strlen){
             pile_to_pile(command,temp);
             break;
         case 1:
-            move
+            move_specific(command,temp);
             break;
         default:
             printf("\nUnknown command..!");
