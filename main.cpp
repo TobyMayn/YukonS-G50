@@ -27,6 +27,8 @@ void pile_to_pile(const char *command, Card *pCard);
 
 void move_specific(const char *command, Card *pCard);
 
+bool valid_move(const char frank, const char fsuit, char trank, char tsuit, Card *to);
+
 Card *new_card(char rank, char suit){
     Card *card = (Card *)malloc(sizeof(Card));
     card->prev = NULL;
@@ -228,16 +230,42 @@ void move_specific(const char *command,Card *pointer) {
         printf("Invalid command..!");
         return;
     }
+
+    while(to->next != NULL){
+        to = to->next;
+    }
     //from this point we have found the card from a pile, and the pile it's supposed to go to.
     //now we check if the move is valid.
 
-    //moves card from a stack
-    Card *temp = pointer->prev;
-    temp->next = NULL;
+    if(valid_move(command[3],command[4],to->rank,to->suit,to)){
+        //moves card from a stack
+        Card *temp = pointer->prev;
+        temp->next = NULL;
+
+        pointer->prev = to;
+        to->next = pointer;
+    }
 
 
+}
 
 
+bool valid_move(const char frank,const char fsuit,char trank,char tsuit,Card *topile){
+    bool valid = false;
+    int i = 0;
+    while(ranks[i] != frank){
+        i++;
+    }
+    if(i < 12 && ranks[i+1] == trank){
+        if(fsuit != tsuit)
+            valid = true;
+    }
+    if(i == 12){
+        //checks if pile is empty for king move
+        if(topile->next == NULL)
+            valid = true;
+    }
+    return valid;
 }
 
 void pile_to_pile(const char *command,Card *pointer) {
@@ -316,6 +344,7 @@ void print_gamestate(){
                 printf("[]\tF%c",(f / 2) + '0');
             }
             else {
+                //prints top of foundation pile
                 while (foundation_temp->next != NULL) {
                     foundation_temp = foundation_temp->next;
                 }
