@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/emil1/OneDrive/Documents/GitHub/YukonS-G50/main.cpp">
+		<Unit filename="C:/Users/emil1/OneDrive/Documents/GitHub/YukonS-G50/main.c">
 			<Option target="YukonS_G50"/>
 		</Unit>
 		<Unit filename="C:/Users/emil1/OneDrive/Documents/GitHub/YukonS-G50/CMakeLists.txt">

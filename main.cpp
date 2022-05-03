@@ -23,7 +23,7 @@ struct card {
     char suit;
 };
 
-void pile_to_pile(const char *command);
+void pile_to_pile(const char *command, Card *pCard);
 
 void move_specific(const char *command);
 
@@ -110,16 +110,16 @@ Card *split_deck(Card *deck, int amount){
     }
     //Emil//Bliver prev og next ikke slettet for den samme node her? (115-117) Ville man ikke skulle gøre sådan her?
     // [120][100] - [90][70] - [100][130]
-    /*
+
     Card *holder = temp_deck->prev;
     holder->next = NULL;
     // [120][NULL] - [90][70] - [100][130]
     temp_deck->prev = NULL;
     // [120][NULL] - [NULL][70] - [100][130]
-    */
+
     temp_deck->prev = NULL;
     Card *part = temp_deck->next; // Variable for holding split part of deck
-    temp_deck->next = NULL;
+    temp_deck->prev->next = NULL;
     return part;
 }
 
@@ -185,14 +185,12 @@ void move(const char *command, int strlen){
     else
         type = 2;
 
-    char command_type[3][9] = {"LastCard","Specific","Unknown"};
-
     switch (type) {
         case 0 :
-            pile_to_pile(command);
+            pile_to_pile(command,temp);
             break;
         case 1:
-            move_specific(command);
+            move
             break;
         default:
             printf("\nUnknown command..!");
@@ -201,11 +199,11 @@ void move(const char *command, int strlen){
 
 }
 
-void move_specific(const char *command) {
+void move_specific(const char *command,Card *pointer) {
 
 }
 
-void pile_to_pile(const char *command) {
+void pile_to_pile(const char *command,Card *pointer) {
 
 }
 
@@ -301,7 +299,7 @@ const char* get_input() {
 
 void setup_columns_foundations(){
     for (int i = 0; i < 4; ++i) {
-        foundations[i] = new_card('d', 'd'); //dummy card
+        foundations[i] = new_card('F', i + 1 +'0'); //dummy card
     }
     for (int i = 0; i < 7; ++i) {
         columns[i] = new_card('C', i + 1 + '0'); //dummy card
