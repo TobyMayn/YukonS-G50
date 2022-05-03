@@ -168,22 +168,36 @@ Card *random_shuffle(Card *deck){
     return deck;
 }
 
-void move(const char *command, int strlen){
-    Card *temp;
-    for (int i = 0; i < sizeof(columns) / sizeof(columns[0]) ; ++i) {
-        if(columns[i]->rank == command[0] && columns[i]->suit == command[1]){
+//method to find pile ie foundtation or column, to start searching for a card.
+//If the given pile doesn't exist the method will return a null pointer.
+Card *get_pile(char rank,char suit){
+    Card *temp = NULL;
+    for (int i = 0; i < ((sizeof(columns) / sizeof(columns[0])) + sizeof(foundations) / sizeof(foundations[0])) ; ++i) {
+        if (i >= 7){
+            if(foundations[i % 7]->rank == rank && foundations[i % 7]->suit == suit)
+                temp = foundations[i % 7];
+        }
+        else if(columns[i % 7]->rank == rank && columns[i % 7]->suit == suit){
             temp = columns[i];
             break;
         }
     }
+    return temp;
+}
 
-    int type;
+void move(const char *command, int strlen){
+    Card *temp = get_pile(command[0],command[1]);
+    if(temp == NULL){
+        printf("Unknown command..!");//if get_pile method returns a null pointer we return to caller with error message
+        return;
+    }
+
+    int type = 2;
     if (strlen == 6)
         type = 0;
     else if(strlen == 9)
         type = 1;
-    else
-        type = 2;
+
 
     switch (type) {
         case 0 :
@@ -192,7 +206,7 @@ void move(const char *command, int strlen){
         case 1:
             move_specific(command,temp);
             break;
-        default:
+        case 2:
             printf("\nUnknown command..!");
             return;
     }
@@ -200,6 +214,29 @@ void move(const char *command, int strlen){
 }
 
 void move_specific(const char *command,Card *pointer) {
+    //checks if card exists in pile / list
+    while(pointer->next != NULL && (pointer->rank != command[3] && pointer->suit != command[4])){
+        pointer = pointer->next;
+    }
+    if(pointer->rank != command[3] && pointer->suit != command[4]){
+        printf("Invalid command..!");
+        return;
+    }
+
+    Card *to = get_pile(command[7],command[8]);
+    if(to == NULL){
+        printf("Invalid command..!");
+        return;
+    }
+    //from this point we have found the card from a pile, and the pile it's supposed to go to.
+    //now we check if the move is valid.
+
+    //moves card from a stack
+    Card *temp = pointer->prev;
+    temp->next = NULL;
+
+
+
 
 }
 
