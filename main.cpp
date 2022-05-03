@@ -23,11 +23,6 @@ struct card {
     char suit;
 };
 
-void pile_to_pile(const char *command, Card *pCard);
-
-void move_specific(const char *command, Card *pCard);
-
-bool valid_move(const char frank, const char fsuit, char trank, char tsuit, Card *to);
 
 Card *new_card(char rank, char suit){
     Card *card = (Card *)malloc(sizeof(Card));
@@ -174,7 +169,7 @@ Card *random_shuffle(Card *deck){
     return deck;
 }
 
-//method to find pile ie foundtation or column, to start searching for a card.
+//method to find pile ie foundation or column, to start searching for a card.
 //If the given pile doesn't exist the method will return a null pointer.
 Card *get_pile(char rank,char suit){
     Card *temp = NULL;
@@ -191,43 +186,68 @@ Card *get_pile(char rank,char suit){
     return temp;
 }
 
-void move(const char *command, int strlen){
-    Card *temp = get_pile(command[0],command[1]);
-    if(temp == NULL){
-        error_message();//if get_pile method returns a null pointer we return to caller with error message
-        return;
-    }
-
-    int type = 2;
-    if (strlen == 6)
-        type = 0;
-    else if(strlen == 9)
-        type = 1;
-
-
-    switch (type) {
-        case 0 :
-            pile_to_pile(command,temp);
-            break;
-        case 1:
-            move_specific(command,temp);
-            break;
-        case 2:
-            error_message();
-            return;
-    }
-
-}
-
 Card *find_card(char rank,char suit,Card *ptr){
     while(ptr->next != NULL && (ptr->rank != rank && ptr->suit != suit)){
         ptr = ptr->next;
     }
-    if(ptr->rank != rank && ptr->suit != suit){
+    if(ptr->rank != rank && ptr->suit != suit || ptr->prev == NULL){ //Checks if the specified card, is the dummy card + checking if the card exists
         error_message();
         return NULL;
     }
     return ptr;
+}
+
+//the foundations will not have a predefined suit. The suit of the foundation will be defined by the first card moved to it.
+bool move_to_foundation(Card *card, Card *toPile) {
+    bool possMove = false;
+    if(card->next != NULL)//checks if we're trying to move more than one card.
+        return possMove;
+
+    if (toPile->prev == NULL){//Checks if the foundation is empty.
+        if(card->rank == ranks[0])//if the foundation is empty check if the card is an Ace.
+            possMove = true;
+    }else{
+        //find topcard in foundation
+        while(toPile->next != NULL){
+            toPile = toPile->next;
+        }
+        int i = 0;
+        while(ranks[i] != card->rank){ //Find the index for the cards rank.
+            i++;
+        }
+
+        if(ranks[i-1] == toPile->rank){//checks if the topcard is one rank less, than the card we with to move.
+            if(card->suit == toPile->suit)//checks for same suit.
+                possMove = true;
+        }
+    }
+    return possMove;
+}
+
+bool valid_move(Card *card,Card *topile){
+    bool valid = false;
+    int i = 0;
+
+    if(topile->rank == foundations[0]->rank){
+        return move_to_foundation(card,topile);
+    }
+
+    while(topile->next != NULL){
+        topile = topile->next;
+    }
+    while(ranks[i] != card->rank){
+        i++;
+    }
+    if(i < 12 && ranks[i+1] == topile->rank){
+        if(card->suit != topile->suit)
+            valid = true;
+    }
+    if(i == 12){
+        //checks if pile is empty for king move
+        if(topile->prev == NULL)
+            valid = true;
+    }
+    return valid;
 }
 
 void move_specific(const char *command,Card *pointer) {
@@ -250,7 +270,7 @@ void move_specific(const char *command,Card *pointer) {
     }
     //from this point we have found the card from a pile, and the pile it's supposed to go to.
     //now we check if the move is valid.
-    if(valid_move(command[3],command[4],to->rank,to->suit,to)){
+    if(valid_move(pointer,to)){
         //moves card from a stack
         Card *temp = pointer->prev;
         temp->next = NULL;
@@ -261,24 +281,6 @@ void move_specific(const char *command,Card *pointer) {
 }
 
 
-bool valid_move(const char frank,const char fsuit,char trank,char tsuit,Card *topile){
-    bool valid = false;
-    int i = 0;
-    while(ranks[i] != frank){
-        i++;
-    }
-    if(i < 12 && ranks[i+1] == trank){
-        if(fsuit != tsuit)
-            valid = true;
-    }
-    if(i == 12){
-        //checks if pile is empty for king move
-        if(topile->next == NULL)
-            valid = true;
-    }
-    return valid;
-}
-
 void pile_to_pile(const char *command,Card *pointer) {
     Card *to = get_pile(command[4],command[5]);
     if (to == NULL){
@@ -286,12 +288,51 @@ void pile_to_pile(const char *command,Card *pointer) {
         return;
     }
 
+    while(pointer->next != NULL){
+        pointer = pointer->next;
+    }
     while(to->next != NULL){
         to = to->next;
     }
 
+    Card *temp;
+    if(valid_move(pointer,to)){
+        temp = pointer->prev;
+        temp->next = NULL; //Dereferencing card from old list.
+
+        pointer->prev =  to;
+        to->next = pointer;//Referencing card in new list.
+    }
+
 }
 
+void move(const char *command, int strlen) {
+    Card *temp = get_pile(command[0], command[1]);//gets pointer of list to move from
+    if (temp == NULL) {
+        error_message();//if the get_pile method returns a null pointer we return to caller with error message
+        return;
+    }
+
+    int type = 2;
+    if (strlen == 6)
+        type = 0;
+    else if (strlen == 9)
+        type = 1;
+
+
+    switch (type) {
+        case 0 :
+            pile_to_pile(command, temp);
+            break;
+        case 1:
+            move_specific(command, temp);
+            break;
+        case 2:
+            error_message();
+            return;
+    }
+
+}
 
 void show(){
     Card *temp = head;
@@ -342,7 +383,11 @@ void print_gamestate(){
             max_length = j;
     }
 
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {
+        printf("\t%c%c",placeholder[i]->rank,placeholder[i]->suit);
+        if (i == (sizeof(placeholder) / sizeof(placeholder[0]) - 1))
+            printf("\n");
+    }
     int f = 1;
     Card* foundation_temp;
     //printing all cards in the column or and empty space if there is no card.
