@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <cstring>
 
 typedef struct card Card;
 
@@ -334,9 +335,10 @@ void move(const char *command, int strlen) {
 
 }
 
+
 void show(){
     Card *temp = head;
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    printf("\n\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
     int i = 0;
     int j = 1;
     int f;
@@ -360,6 +362,25 @@ void show(){
     printf("\n\n");
 }
 
+int find_longest_list(){
+    int max_length = 0;
+    //temp pointer to iterate through lists
+    Card *temp;
+    //finding the longest linked list.
+    for (int i = 0; i < sizeof(columns) / sizeof(columns[0]); ++i) {
+        int j = 0;
+        temp = columns[i];
+        while(temp->next != NULL){
+            temp = temp->next;
+            j++;
+        }
+        if(j > max_length)
+            max_length = j;
+    }
+    return max_length;
+}
+
+//method for printing the contents of each list
 void print_gamestate(){
     Card *placeholder[7];
 
@@ -368,31 +389,20 @@ void print_gamestate(){
         placeholder[i] = columns[i];
     }
 
-    int max_length = 0;
-    //temp pointer to iterate through lists
-    Card *temp;
-    //finding the longest linked list.
-    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {
-        int j = 0;
-        temp = placeholder[i];
-        while(temp->next != NULL){
-            temp = temp->next;
-            j++;
-        }
-        if(j > max_length)
-            max_length = j;
-    }
+    int max_length = find_longest_list();
+    if(max_length < 8)
+        max_length = 8;
 
-    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {
+    printf("\n");
+    for (int i = 0; i < sizeof(placeholder) / sizeof(placeholder[0]); ++i) {//Prints the dummy cards for all columns
         printf("\t%c%c",placeholder[i]->rank,placeholder[i]->suit);
-        if (i == (sizeof(placeholder) / sizeof(placeholder[0]) - 1))
-            printf("\n");
     }
+    printf("\n");
     int f = 1;
     Card* foundation_temp;
     //printing all cards in the column or and empty space if there is no card.
     for (int i = 0; i < max_length; ++i) {
-        printf("\n");
+        printf("\n\t");
         for (int j = 0; j < sizeof(placeholder) / sizeof(placeholder[0]); ++j) {
             if (placeholder[j]->next != NULL){
                 placeholder[j] = placeholder[j]->next;
@@ -403,17 +413,15 @@ void print_gamestate(){
         }
         //printing foundation cards for evert second row.
         f++;
-        if (f % 2 == 0 && (f/2) < sizeof(foundations) / sizeof(foundations[0])){
+        if (f % 2 == 0 && ((f/2) - 1) < (sizeof(foundations) / sizeof(foundations[0]))){
             foundation_temp = foundations[(f / 2) - 1];
+            while (foundation_temp->next != NULL) {
+                foundation_temp = foundation_temp->next;
+            }
             if(foundation_temp->prev == NULL){
                 printf("[]\tF%c",(f / 2) + '0');
-            }
-            else {
-                //prints top of foundation pile
-                while (foundation_temp->next != NULL) {
-                    foundation_temp = foundation_temp->next;
-                }
-                printf("%c%c\t",foundation_temp->rank,foundation_temp->suit);
+            }else{
+                printf("%c%c\t%c%c",foundation_temp->rank,foundation_temp->suit,foundations[(f / 2) - 1]->rank,foundations[(f / 2) - 1]->suit);
             }
         }
     }
@@ -437,9 +445,17 @@ void setup_columns_foundations(){
     }
 }
 
+int find_string_length(const char *string){
+    int size = 0;
+    for (int i = 0; i < strlen(string); ++i) {
+        if(string[i] != ' ') {
+            size++;
+        }
+    }
+    return size;
+}
 
 int main() {
-    int a = 4;
 
 //    setup_columns_foundations();
 //    Card *first_card = columns[0];
@@ -455,6 +471,23 @@ int main() {
 //    printf("\t  \t  \t  \t  \t  \tQC\t[]\t\t\n");
 //    printf("\t  \t  \t  \t  \t  \t  \tKH\t\tF4\n");
 //    printf("\t  \t  \t  \t  \t  \t  \t  \t\t\n");
+
+//test for move method
+/*
+setup_columns_foundations();
+    Card *tempCard = new_card('K','H');
+    columns[4]->next = tempCard;
+    tempCard->prev = columns[4];
+    card *tempcard2 = new_card('A','H');
+    columns[0]->next = tempcard2;
+    tempcard2->prev = columns[0];
+    print_gamestate();
+    char moveF[] = "C5:KH->C6  ";
+    move(moveF, find_string_length(moveF));
+    char moveE[] = "C1->F1";
+    move(moveE, find_string_length(moveE));
+    print_gamestate();
+    */
 
     //Test for show method
     head = load_deck("C:\\Users\\emil1\\OneDrive\\Documents\\GitHub\\YukonS-G50\\Test_input.txt");

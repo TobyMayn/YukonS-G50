@@ -135,7 +135,8 @@ CMakeFiles/YukonS_G50.dir/main.cpp.obj: ../main.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/istream \
   C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/istream.tcc \
   C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/string.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h
+  C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h \
+  C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cstring
 
 
 C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/vadefs.h:
@@ -407,3 +408,5 @@ C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/1
 C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/string.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2022.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cstring:
